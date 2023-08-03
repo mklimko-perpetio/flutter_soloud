@@ -20,7 +20,7 @@ void debugIsolates(String text) {
   // print(text);
 }
 
-/// print the message and the error when [error] 
+/// print the message and the error when [error]
 /// is not [CaptureErrors.captureNoError]
 ///
 void printCaptureError(String message, CaptureErrors error) {
@@ -39,13 +39,13 @@ void printCaptureError(String message, CaptureErrors error) {
       break;
     case CaptureErrors.nullPointer:
       out = 'Capture null pointer error. Could happens when passing '
-      'a non initialized pointer (with calloc()) to retrieve FFT or wave data';
+          'a non initialized pointer (with calloc()) to retrieve FFT or wave data';
       break;
   }
   debugPrint('flutter_soloud capture error: $message: $out');
 }
 
-/// print the message and the error when [error] 
+/// print the message and the error when [error]
 /// is not [PlayerErrors.noError]
 ///
 void printPlayerError(String message, PlayerErrors error) {
@@ -82,7 +82,7 @@ void printPlayerError(String message, PlayerErrors error) {
       break;
     case PlayerErrors.nullPointer:
       out = 'Capture null pointer error. Could happens when passing '
-      'a non initialized pointer (with calloc()) to retrieve FFT or wave data';
+          'a non initialized pointer (with calloc()) to retrieve FFT or wave data';
       break;
     case PlayerErrors.soundHashNotFound:
       out = 'The sound with specified hash is not found';
@@ -110,6 +110,7 @@ enum MessageEvents {
   startLoop,
   stopLoop,
   loop,
+  setEchoFilter,
   loadFile,
   speechText,
   play,
@@ -137,6 +138,13 @@ typedef ArgsPlay3d = ({
 });
 typedef ArgsStop = ({int handle});
 typedef ArgsStopSound = ({int soundHash});
+typedef ArgsSetEchoFilter = ({
+  int handle,
+  int filterId,
+  double delay,
+  double decay,
+  double aFilter
+});
 
 /// Top Level audio isolate function
 ///
@@ -194,7 +202,7 @@ void audioIsolate(SendPort isolateToMainStream) {
         // add the new sound handler to the list
         SoundProps? newSound;
         if (ret.error == PlayerErrors.noError) {
-          newSound = SoundProps(ret.soundHash);
+          newSound = SoundProps(ret.soundHash as int);
           activeSounds.add(newSound);
         }
         isolateToMainStream.send({
@@ -369,6 +377,19 @@ void audioIsolate(SendPort isolateToMainStream) {
             );
           });
         }
+        break;
+      case MessageEvents.setEchoFilter:
+        final args = event['args']! as ArgsSetEchoFilter;
+        soLoudController.soLoudFFI.setEchoFilter(
+          args.handle,
+          args.filterId,
+          args.decay,
+          args.decay,
+          args.aFilter,
+        );
+
+        isolateToMainStream
+            .send({'event': event['event'], 'args': args, 'return': ()});
         break;
     }
   });

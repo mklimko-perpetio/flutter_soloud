@@ -122,6 +122,7 @@ class _Page4State extends State<Page4> {
     /// play it
     final playRet = await SoLoud().play3d(currentSound!, 0, 0, 0);
     SoLoud().setLooping(playRet.newHandle, true);
+    SoLoud().setEchoFilter(playRet.newHandle, 0, 0.2, 0.5, 0.05);
     SoLoud().set3dSourceMinMaxDistance(
       playRet.newHandle,
       50,

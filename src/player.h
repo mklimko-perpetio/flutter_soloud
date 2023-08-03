@@ -98,6 +98,13 @@ public:
     /// @param enable
     void setLooping(unsigned int handle, bool enable);
 
+    void setEchoFilter(
+        unsigned int handle,
+        unsigned int filterId,
+        float delay,
+        float decay,
+        float aFilter);
+
     /// @brief Speech
     /// @param textToSpeech
     /// @param handle handle of the sound. -1 if error

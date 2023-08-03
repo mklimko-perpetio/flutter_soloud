@@ -159,8 +159,9 @@ class FlutterSoLoudFfi {
   ///
   /// [completeFileName] the complete file path
   /// [hash] return hash of the sound
-  /// Returns [PlayerErrors.noError] if success
-  ({PlayerErrors error, int soundHash}) loadFile(String completeFileName) {
+  /// Returns [PlayerErrors.noError] if success({PlayerErrors error, int soundHash})
+
+  loadFile(String completeFileName) {
     // ignore: omit_local_variable_types
     final ffi.Pointer<ffi.UnsignedInt> h =
         calloc(ffi.sizeOf<ffi.UnsignedInt>());
@@ -301,6 +302,20 @@ class FlutterSoLoudFfi {
     'setLooping',
   );
   late final _setLooping = _setLoopingPtr.asFunction<void Function(int, int)>();
+
+  void setEchoFilter(
+      int handle, int filterId, double delay, double decay, double aFilter) {
+    return _setEchoFilter(handle, filterId, delay, decay, aFilter);
+  }
+
+  late final _setEchoFilterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.UnsignedInt, ffi.UnsignedInt, ffi.Float,
+              ffi.Float, ffi.Float)>>(
+    'setEchoFilter',
+  );
+  late final _setEchoFilter = _setEchoFilterPtr
+      .asFunction<void Function(int, int, double, double, double)>();
 
   /// Enable or disable visualization
   ///

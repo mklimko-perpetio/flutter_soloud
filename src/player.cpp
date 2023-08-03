@@ -180,6 +180,23 @@ void Player::setLooping(unsigned int handle, bool enable)
     soloud.setLooping(handle, enable);
 }
 
+void Player::setEchoFilter(
+    unsigned int handle,
+    unsigned int filterId,
+    float aDelay,
+    float aDecay,
+    float aFilter)
+{
+    int handleId;
+    ActiveSound *sound = findByHandle(handle, &handleId);
+    if (sound == nullptr)
+        return;
+
+    SoLoud::EchoFilter gEcho;
+    gEcho.setParams(aDelay, aDecay, aFilter);
+    sound->sound.setFilter(filterId, &gEcho);
+}
+
 PlayerErrors Player::textToSpeech(const std::string &textToSpeech, unsigned int &handle)
 {
     if (!mInited)

@@ -166,6 +166,18 @@ extern "C"
         player.setLooping(handle, enable);
     }
 
+    FFI_PLUGIN_EXPORT void setEchoFilter(
+        unsigned int handle,
+        unsigned int filterId,
+        float delay,
+        float decay,
+        float aFilter)
+    {
+        if (!player.isInited())
+            return;
+        player.setEchoFilter(handle, filterId, delay, decay, aFilter);
+    }
+
     /// Enable or disable visualization
     ///
     /// [enabled] enable or disable it

@@ -436,8 +436,9 @@ class SoLoud {
   ///
   /// [handle] the sound handle
   /// Return [PlayerErrors.noError] on success and true if paused
-  ///
-  ({PlayerErrors error, bool pause}) getPause(int handle) {
+  ///({PlayerErrors error, bool pause})
+
+  getPause(int handle) {
     if (!isPlayerInited) {
       printPlayerError('getPause()', PlayerErrors.engineNotInited);
       return (error: PlayerErrors.engineNotInited, pause: false);
@@ -516,6 +517,18 @@ class SoLoud {
     return PlayerErrors.noError;
   }
 
+  PlayerErrors setEchoFilter(
+      int handle, int filterId, double delay, double decay, double aFilter) {
+    if (!isPlayerInited) {
+      printPlayerError('setEchoFilter()', PlayerErrors.engineNotInited);
+      return PlayerErrors.engineNotInited;
+    }
+    SoLoudController()
+        .soLoudFFI
+        .setEchoFilter(handle, filterId, delay, decay, aFilter);
+    return PlayerErrors.noError;
+  }
+
   /// Enable or disable visualization.
   /// When enabled it will be possible to get FFT and wave data.
   ///
@@ -536,8 +549,9 @@ class SoLoud {
   ///
   /// [soundHash] the sound hash to get the length
   /// returns sound length in seconds
-  ///
-  ({PlayerErrors error, double length}) getLength(int soundHash) {
+  ///({PlayerErrors error, double length})
+
+  getLength(int soundHash) {
     if (!isPlayerInited) {
       printPlayerError('getLength()', PlayerErrors.engineNotInited);
       return (error: PlayerErrors.engineNotInited, length: 0.0);
@@ -565,8 +579,9 @@ class SoLoud {
   ///
   /// [handle] the sound handle
   /// Return PlayerErrors.noError if success and position in seconds
-  ///
-  ({PlayerErrors error, double position}) getPosition(int handle) {
+  ///({PlayerErrors error, double position})
+
+  getPosition(int handle) {
     if (!isPlayerInited) {
       printPlayerError('getPosition()', PlayerErrors.engineNotInited);
       return (error: PlayerErrors.engineNotInited, position: 0.0);
@@ -579,8 +594,9 @@ class SoLoud {
   ///
   /// [handle] handle to check
   /// Return PlayerErrors.noError if success and isvalid==true if valid
-  ///
-  ({PlayerErrors error, bool isValid}) getIsValidVoiceHandle(int handle) {
+  ///({PlayerErrors error, bool isValid})
+
+  getIsValidVoiceHandle(int handle) {
     if (!isPlayerInited) {
       printPlayerError('getIsValidVoiceHandle()', PlayerErrors.engineNotInited);
       return (error: PlayerErrors.engineNotInited, isValid: false);
